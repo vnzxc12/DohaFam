@@ -518,7 +518,12 @@ if (lockForm) {
       const result = await res.json();
       if (result.success) {
         const m = vaultData.members.find(item => item.id === memberId);
-        if (m) m.locked = targetLocked;
+        if (m) {
+          m.locked = targetLocked;
+          if (result.member && Array.isArray(result.member.wishes)) {
+            m.wishes = result.member.wishes;
+          }
+        }
 
         const shouldOpenEdit = openEditAfterUnlock;
         closeLockModal();

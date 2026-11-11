@@ -47,27 +47,31 @@
       "wishes": [
         {
           "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
+          "link": "https://amazon.com",
+          "note": "DeLonghi, Black",
+          "title": "Espresso Coffee Machine",
+          "locked": false,
           "claimed": false
         },
         {
           "id": 2,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "Nike Pegasus size 42",
+          "title": "Running Shoes",
+          "locked": false,
           "claimed": false
         },
         {
           "id": 3,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "Cashmere wool",
+          "title": "Winter Scarf",
+          "locked": false,
           "claimed": false
         }
       ],
-      "locked": false
+      "locked": false,
+      "updatedAt": "2026-11-11T08:14:39.003Z"
     },
     {
       "id": "banjo",
