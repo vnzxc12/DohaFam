@@ -155,14 +155,10 @@ function renderMembers() {
 
           <div style="display:flex; align-items:center; gap:6px;">
             ${isLocked ? `
-              <button class="lock-pill locked" onclick="event.stopPropagation(); openLockModal('${member.id}', false)" title="Wishlist is locked. Tap to unlock with password.">
-                <span>🔒</span> Locked
+              <button class="lock-badge-sm" onclick="event.stopPropagation(); openLockModal('${member.id}', false)" title="Wishlist is locked. Tap to unlock.">
+                🔒
               </button>
-            ` : `
-              <button class="lock-pill unlocked" onclick="event.stopPropagation(); openLockModal('${member.id}', true)" title="Wishlist is open. Tap to lock.">
-                <span>🔓</span> Open
-              </button>
-            `}
+            ` : ''}
             <div class="wish-counter-badge ${isFull ? 'full' : ''}">
               ${filledCount} / 3 Wishes ${isFull ? '⭐' : ''}
             </div>
@@ -233,8 +229,8 @@ function renderMembers() {
             <button class="btn-card-edit-main" onclick="openEditModal('${member.id}')">
               <span>✏️</span> Edit ${escapeHtml(member.name)}'s Wishlist
             </button>
-            <button class="btn-card-lock-action" onclick="openLockModal('${member.id}', true)" title="Lock this wishlist so no one can edit it">
-              <span>🔒</span> Lock
+            <button class="btn-card-lock-sm" onclick="openLockModal('${member.id}', true)" title="Lock this wishlist">
+              🔒
             </button>
           `}
         </div>
@@ -537,7 +533,7 @@ if (lockForm) {
           }
         }
       } else {
-        lockErrorMsg.textContent = result.error || 'Incorrect password! Password is @admin123';
+        lockErrorMsg.textContent = result.error || 'Incorrect password.';
         lockErrorMsg.style.display = 'block';
         lockPasswordInput.focus();
         lockPasswordInput.select();

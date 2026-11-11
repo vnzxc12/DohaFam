@@ -739,55 +739,54 @@ body {
   border-color: #ffd700;
 }
 
-.btn-card-lock-action {
+.btn-card-lock-sm {
+  width: 44px;
+  height: 48px;
+  min-width: 44px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(212, 175, 55, 0.35);
-  color: var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 0 16px;
-  font-size: 0.88rem;
-  font-weight: 700;
+  color: var(--gold-light);
+  font-size: 1.15rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
-  transition: all 0.2s;
-  min-height: 48px;
-  white-space: nowrap;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.btn-card-lock-action:hover {
-  background: rgba(212, 175, 55, 0.2);
+.btn-card-lock-sm:hover {
+  background: rgba(212, 175, 55, 0.22);
   border-color: var(--gold-primary);
-  transform: translateY(-2px);
+  transform: scale(1.06);
 }
 
-/* Lock Status Pills */
-.lock-pill {
-  border: none;
-  border-radius: 12px;
-  padding: 3px 9px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
+.btn-card-lock-sm:active {
+  transform: scale(0.96);
 }
 
-.lock-pill.locked {
+.lock-badge-sm {
   background: rgba(179, 27, 48, 0.35);
   border: 1px solid rgba(255, 80, 100, 0.5);
-  color: #ffb8c1;
+  color: #ffccd3;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
 }
 
-.lock-pill.locked:hover {
-  background: rgba(179, 27, 48, 0.55);
-  transform: scale(1.04);
+.lock-badge-sm:hover {
+  background: rgba(179, 27, 48, 0.6);
+  transform: scale(1.1);
 }
-
-.lock-pill.unlocked {
   background: rgba(0, 247, 165, 0.12);
   border: 1px solid rgba(0, 247, 165, 0.35);
   color: #00f7a5;

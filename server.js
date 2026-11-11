@@ -195,7 +195,7 @@ app.put('/api/members/:id/wishes', async (req, res) => {
   if (isCurrentlyLocked) {
     if (password !== ADMIN_PASSWORD) {
       return res.status(403).json({
-        error: '🔒 This wishlist is locked! Enter password @admin123 to make changes.',
+        error: '🔒 This wishlist is locked! Enter admin password to make changes.',
         isLocked: true
       });
     }
@@ -275,7 +275,7 @@ app.post('/api/members/:id/lock', async (req, res) => {
   const { password, locked } = req.body;
 
   if (password !== ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Incorrect password! Password is @admin123' });
+    return res.status(401).json({ error: 'Incorrect password.' });
   }
 
   const data = readLocalData();

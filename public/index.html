@@ -219,12 +219,9 @@
             <input type="hidden" id="lock-target-state">
 
             <div class="form-group" style="margin-top: 14px;">
-              <label for="lock-password-input" style="display:flex; justify-content:space-between; align-items:center;">
-                <span>Password</span>
-                <span class="password-hint">Admin: <code>@admin123</code></span>
-              </label>
+              <label for="lock-password-input">Admin Password</label>
               <div class="password-input-wrap">
-                <input type="password" id="lock-password-input" class="form-input" placeholder="Enter @admin123" required autocomplete="current-password">
+                <input type="password" id="lock-password-input" class="form-input" placeholder="Enter password..." required autocomplete="current-password">
                 <button type="button" id="btn-toggle-pwd-vis" class="btn-pwd-eye" title="Show/Hide Password">👁️</button>
               </div>
               <p id="lock-error-msg" class="lock-error-text" style="display:none;"></p>
