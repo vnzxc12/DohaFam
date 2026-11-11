@@ -1,0 +1,410 @@
+{
+  "party": {
+    "title": "DOHA FAM CHRISTMAS PARTY 2026",
+    "subtitle": "Wishlist Vault",
+    "year": 2026,
+    "location": "Doha, Qatar 🇶🇦",
+    "tagline": "Tap your name to fill in your 3 Christmas wishes! 🎁"
+  },
+  "members": [
+    {
+      "id": "jon",
+      "name": "Jon",
+      "avatar": "🎅",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "daniel",
+      "name": "Daniel",
+      "avatar": "🎄",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "banjo",
+      "name": "Banjo",
+      "avatar": "⭐",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "vonn",
+      "name": "Vonn",
+      "avatar": "🎁",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "Test",
+          "note": "",
+          "link": "",
+          "price": "",
+          "claimed": true,
+          "claimedBy": "Secret Santa 🤫"
+        },
+        {
+          "id": 2,
+          "title": "Test",
+          "note": "",
+          "link": "",
+          "price": "",
+          "claimed": true,
+          "claimedBy": "Secret Santa 🤫"
+        },
+        {
+          "id": 3,
+          "title": "Test",
+          "note": "",
+          "link": "",
+          "price": "",
+          "claimed": true,
+          "claimedBy": "Secret Santa 🤫"
+        }
+      ],
+      "updatedAt": "2026-11-11T07:03:59.336Z"
+    },
+    {
+      "id": "francis",
+      "name": "Francis",
+      "avatar": "🦌",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "denzel",
+      "name": "Denzel",
+      "avatar": "⛄",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "kevin",
+      "name": "Kevin",
+      "avatar": "🔔",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "jopet",
+      "name": "Jopet",
+      "avatar": "🍪",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "jen",
+      "name": "Jen",
+      "avatar": "✨",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "mira",
+      "name": "Mira",
+      "avatar": "🎀",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "zeus",
+      "name": "Zeus",
+      "avatar": "⚡",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "maria",
+      "name": "Maria",
+      "avatar": "🕯️",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "armi",
+      "name": "Armi",
+      "avatar": "🧣",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "belle",
+      "name": "Belle",
+      "avatar": "❄️",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ]
+    }
+  ]
+}

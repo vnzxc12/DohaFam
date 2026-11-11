@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DOHA FAM CHRISTMAS PARTY 2026</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Mountains+of+Christmas:wght@700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Snowfall Canvas Background -->
+  <canvas id="snow-canvas"></canvas>
+
+  <!-- Twinkling Christmas Lights Garland -->
+  <div class="lights-string" aria-hidden="true">
+    <ul class="lightrope">
+      <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header class="hero-header">
+      <div class="header-top-row">
+        <div class="festive-badge">
+          <span class="badge-icon">🎄</span>
+          <span class="badge-text">CHRISTMAS 2026</span>
+          <span class="badge-icon">🎅</span>
+        </div>
+        <button id="btn-toggle-snow" class="btn-icon" title="Toggle Snowfall">
+          <span id="snow-icon">❄️</span>
+        </button>
+      </div>
+
+      <h1 class="main-title">
+        <span class="title-top">DOHA FAM</span>
+        <span class="title-main">CHRISTMAS PARTY</span>
+        <span class="title-year">2026</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Tap on your card to fill in your <strong>3 Christmas Wishes</strong>! 🎁
+      </p>
+
+      <!-- Quick Name Jump Navigation (Smooth Scroll on Mobile) -->
+      <nav class="quick-nav-bar" id="quick-nav-bar" aria-label="Fam Members Quick Nav">
+        <!-- Rendered dynamically for all 14 members -->
+      </nav>
+
+      <!-- Search & Filters -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search name (Jon, Daniel, Mira, Zeus...)" autocomplete="off">
+          <button id="search-clear" class="clear-btn" style="display:none;">✕</button>
+        </div>
+
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All (<span id="count-all">14</span>)</button>
+          <button class="filter-pill" data-filter="complete">Full (3/3)</button>
+          <button class="filter-pill" data-filter="incomplete">Needs Wishes</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Vault Grid -->
+    <main class="vault-section">
+      <div id="members-grid" class="members-grid">
+        <div class="loading-state">
+          <div class="spinner">🎄</div>
+          <p>Unlocking the Christmas Vault...</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile-First Edit Wishlist Modal / Drawer -->
+    <div id="wish-modal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        
+        <div class="sheet-header">
+          <div class="sheet-member-info">
+            <span class="sheet-avatar" id="modal-avatar">🎅</span>
+            <div>
+              <h2 id="modal-title">Edit Wishlist</h2>
+              <p class="sheet-sub">Add up to 3 gift wishes</p>
+            </div>
+          </div>
+          <button id="btn-close-modal" class="close-modal-btn">✕</button>
+        </div>
+
+        <!-- Quick Idea Pills -->
+        <div class="ideas-section">
+          <span class="ideas-label">💡 Ideas:</span>
+          <div class="ideas-scroll">
+            <button type="button" class="idea-tag" data-idea="Perfume / Cologne">Perfume 🧴</button>
+            <button type="button" class="idea-tag" data-idea="Sneakers / Shoes">Sneakers 👟</button>
+            <button type="button" class="idea-tag" data-idea="Coffee Beans / Grinder">Coffee ☕</button>
+            <button type="button" class="idea-tag" data-idea="Tech / Charger / Earbuds">Tech 🎧</button>
+            <button type="button" class="idea-tag" data-idea="Cozy Hoodie / Jacket">Hoodie 🧥</button>
+            <button type="button" class="idea-tag" data-idea="Board Game / Card Game">Game 🎲</button>
+          </div>
+        </div>
+
+        <form id="wishes-form" class="wishes-form">
+          <input type="hidden" id="edit-member-id">
+
+          <!-- Wish Slot 1 -->
+          <div class="wish-edit-card">
+            <div class="slot-header">
+              <span class="slot-badge gold">WISH #1 🎁</span>
+              <span class="slot-tip">Top Pick</span>
+            </div>
+            <div class="form-group">
+              <label>Gift / Item Title *</label>
+              <input type="text" id="w1-title" class="form-input" placeholder="e.g., Wireless Noise-Cancelling Earbuds" required>
+            </div>
+            <div class="form-group">
+              <label>Details / Size / Color</label>
+              <input type="text" id="w1-note" class="form-input" placeholder="e.g., Black color, or size Medium">
+            </div>
+            <div class="form-group">
+              <label>Link / Store (optional)</label>
+              <input type="url" id="w1-link" class="form-input" placeholder="https://amazon.com/... or store link">
+            </div>
+          </div>
+
+          <!-- Wish Slot 2 -->
+          <div class="wish-edit-card">
+            <div class="slot-header">
+              <span class="slot-badge red">WISH #2 ⭐</span>
+              <span class="slot-tip">Second Choice</span>
+            </div>
+            <div class="form-group">
+              <label>Gift / Item Title *</label>
+              <input type="text" id="w2-title" class="form-input" placeholder="e.g., Specialty Arabica Coffee Beans" required>
+            </div>
+            <div class="form-group">
+              <label>Details / Size / Color</label>
+              <input type="text" id="w2-note" class="form-input" placeholder="e.g., Whole bean, medium roast">
+            </div>
+            <div class="form-group">
+              <label>Link / Store (optional)</label>
+              <input type="url" id="w2-link" class="form-input" placeholder="https://...">
+            </div>
+          </div>
+
+          <!-- Wish Slot 3 -->
+          <div class="wish-edit-card">
+            <div class="slot-header">
+              <span class="slot-badge green">WISH #3 🎄</span>
+              <span class="slot-tip">Fun Pick</span>
+            </div>
+            <div class="form-group">
+              <label>Gift / Item Title *</label>
+              <input type="text" id="w3-title" class="form-input" placeholder="e.g., Monopoly Deal or Holiday Socks" required>
+            </div>
+            <div class="form-group">
+              <label>Details / Size / Color</label>
+              <input type="text" id="w3-note" class="form-input" placeholder="e.g., Any fun design">
+            </div>
+            <div class="form-group">
+              <label>Link / Store (optional)</label>
+              <input type="url" id="w3-link" class="form-input" placeholder="https://...">
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-modal" class="btn-secondary">Cancel</button>
+            <button type="submit" id="btn-save-wishes" class="btn-festive btn-gold save-btn">
+              <span>🎁</span> Save Wishes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert">
+      <span id="toast-icon">✨</span>
+      <span id="toast-msg">Saved!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-tree">🎄 🎁 🦌 ⭐ ⛄</div>
+      <p>DOHA FAM CHRISTMAS PARTY 2026</p>
+      <p class="footer-sub">Share joy & merry Christmas to everyone! 🇶🇦❤️</p>
+    </footer>
+
+  </div>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Main App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
