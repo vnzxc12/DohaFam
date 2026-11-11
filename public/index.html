@@ -38,6 +38,11 @@
           <span class="badge-icon">🎅</span>
         </div>
 
+        <button id="btn-toggle-music" class="festive-music-btn" title="Play/Pause Silent Night Instrumental">
+          <span id="music-icon">🎵</span>
+          <span id="music-text">Silent Night</span>
+        </button>
+
         <button id="btn-toggle-snow" class="btn-icon" title="Toggle Snowfall">
           <span id="snow-icon">❄️</span>
         </button>
@@ -176,17 +181,7 @@
             </div>
           </div>
 
-          <!-- Lock After Save Toggle -->
-          <div class="lock-option-card">
-            <label class="lock-option-label">
-              <input type="checkbox" id="modal-lock-after-save" class="lock-checkbox">
-              <div class="lock-option-text">
-                <span class="lock-option-title">🔒 Lock Wishlist After Saving</span>
-                <span class="lock-option-sub">Prevents friends from changing your wishes (unlock with password)</span>
-              </div>
-            </label>
-          </div>
-
+          <!-- Action Buttons -->
           <div class="modal-actions">
             <button type="button" id="btn-clear-wishes" class="btn-secondary" title="Clear all 3 slots if you changed your mind">Clear All</button>
             <button type="button" id="btn-cancel-modal" class="btn-secondary">Cancel</button>
@@ -219,7 +214,7 @@
             <input type="hidden" id="lock-target-state">
 
             <div class="form-group" style="margin-top: 14px;">
-              <label for="lock-password-input">Admin Password</label>
+              <label for="lock-password-input">Password</label>
               <div class="password-input-wrap">
                 <input type="password" id="lock-password-input" class="form-input" placeholder="Enter password..." required autocomplete="current-password">
                 <button type="button" id="btn-toggle-pwd-vis" class="btn-pwd-eye" title="Show/Hide Password">👁️</button>
@@ -243,6 +238,9 @@
       <span id="toast-icon">✨</span>
       <span id="toast-msg">Saved!</span>
     </div>
+
+    <!-- Background Music Audio -->
+    <audio id="bg-music" src="audio/silent_night.mp3" loop preload="auto"></audio>
 
     <!-- Footer -->
     <footer class="app-footer">

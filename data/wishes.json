@@ -8,447 +8,466 @@
   },
   "members": [
     {
-      "id": "jon",
-      "name": "Jon",
-      "avatar": "🎅",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "Perfume Sauvage",
-          "note": "100ml EDT",
-          "link": "https://sephora.com",
-          "claimed": false,
-          "locked": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false,
-          "locked": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false,
-          "locked": false
-        }
-      ],
-      "updatedAt": "2026-11-11T08:04:13.747Z",
-      "locked": false
-    },
-    {
-      "id": "daniel",
-      "name": "Daniel",
-      "avatar": "🎄",
-      "wishes": [
-        {
-          "id": 1,
-          "link": "https://amazon.com",
-          "note": "DeLonghi, Black",
-          "title": "Espresso Coffee Machine",
-          "locked": false,
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "link": "",
-          "note": "Nike Pegasus size 42",
-          "title": "Running Shoes",
-          "locked": false,
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "link": "",
-          "note": "Cashmere wool",
-          "title": "Winter Scarf",
-          "locked": false,
-          "claimed": false
-        }
-      ],
-      "locked": false,
-      "updatedAt": "2026-11-11T08:14:39.003Z"
-    },
-    {
-      "id": "banjo",
-      "name": "Banjo",
-      "avatar": "⭐",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "vonn",
-      "name": "Vonn",
-      "avatar": "🎁",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "francis",
-      "name": "Francis",
-      "avatar": "🦌",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "denzel",
-      "name": "Denzel",
-      "avatar": "⛄",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "kevin",
-      "name": "Kevin",
-      "avatar": "🔔",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "jopet",
-      "name": "Jopet",
-      "avatar": "🍪",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "jen",
-      "name": "Jen",
-      "avatar": "✨",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "mira",
-      "name": "Mira",
-      "avatar": "🎀",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "zeus",
-      "name": "Zeus",
-      "avatar": "⚡",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
-      "id": "maria",
-      "name": "Maria",
-      "avatar": "🕯️",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
-    },
-    {
       "id": "armi",
       "name": "Armi",
       "avatar": "🧣",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
       "wishes": [
         {
           "id": 1,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         },
         {
           "id": 2,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         },
         {
           "id": 3,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         }
-      ],
-      "locked": false
-    },
-    {
-      "id": "belle",
-      "name": "Belle",
-      "avatar": "❄️",
-      "wishes": [
-        {
-          "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 2,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        },
-        {
-          "id": 3,
-          "title": "",
-          "note": "",
-          "link": "",
-          "claimed": false
-        }
-      ],
-      "locked": false
+      ]
     },
     {
       "id": "aron",
       "name": "Aron",
       "avatar": "🎉",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
       "wishes": [
         {
           "id": 1,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         },
         {
           "id": 2,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         },
         {
           "id": 3,
-          "title": "",
-          "note": "",
           "link": "",
+          "note": "",
+          "title": "",
           "claimed": false
         }
-      ],
-      "locked": false
+      ]
+    },
+    {
+      "id": "banjo",
+      "name": "Banjo",
+      "avatar": "⭐",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "belle",
+      "name": "Belle",
+      "avatar": "❄️",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "daniel",
+      "name": "Daniel",
+      "avatar": "🎄",
+      "locked": true,
+      "updatedAt": "2026-11-11T10:22:46.135+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "Airfryer",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "https://www.lcwaikiki.it/loose-fit-suede-look-mens-jacket-brown-o-5262938",
+          "note": "Medium / brown or dark blue",
+          "title": "Jacket",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "https://www.lcwaikiki.it/half-zip-mens-polar-sweatshirt-green-o-5417612",
+          "note": "Medium dark green or dark blue",
+          "title": "Long sleeves",
+          "locked": true,
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "denzel",
+      "name": "Denzel",
+      "avatar": "⛄",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "francis",
+      "name": "Francis",
+      "avatar": "🦌",
+      "locked": true,
+      "updatedAt": "2026-11-11T10:29:20.479+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "https://www.nike.qa/en/home/?gad_source=1&gad_campaignid=21741065224&gbraid=0AAAAA-LGa_BM_dTpbk8nAGDlGa9udAY6E&gclid=Cj0KCQiAnsvXBhCqARIsAHKgGNbXllkkiMIcSe00zgyJVETTp-w1nzGFOoPE9yHFDd9Od238u75kWmIaAgqLEALw_wcB",
+          "note": "Nike/adidas/jordan/43/Black with touch of white",
+          "title": "Slides",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "locked": true,
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "jen",
+      "name": "Jen",
+      "avatar": "✨",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "jon",
+      "name": "Jon",
+      "avatar": "🎅",
+      "locked": true,
+      "updatedAt": "2026-11-11T10:20:45.931+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "https://www.nespresso.com/qa/en/accessories/limited-edition-travel-mug-city-sun-yellow",
+          "note": "City Sun Yellow",
+          "title": "Nespresso Travel Mug",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "https://www.virginmegastore.qa/en/brands/secrid",
+          "note": "Black or any dark color",
+          "title": "Secrid Cardholder Wallet",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "locked": true,
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "jopet",
+      "name": "Jopet",
+      "avatar": "🍪",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "kevin",
+      "name": "Kevin",
+      "avatar": "🔔",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "maria",
+      "name": "Maria",
+      "avatar": "🕯️",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "mira",
+      "name": "Mira",
+      "avatar": "🎀",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "vonn",
+      "name": "Vonn",
+      "avatar": "🎁",
+      "locked": true,
+      "updatedAt": "2026-11-11T10:16:47.982+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "Miniatures or Bar [Assorted Brands]",
+          "title": "Chocolate Assorted Pampasalubong",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "locked": true,
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "locked": true,
+          "claimed": false
+        }
+      ]
+    },
+    {
+      "id": "zeus",
+      "name": "Zeus",
+      "avatar": "⚡",
+      "locked": false,
+      "updatedAt": "2026-11-11T07:28:37.45675+00:00",
+      "wishes": [
+        {
+          "id": 1,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "link": "",
+          "note": "",
+          "title": "",
+          "claimed": false
+        }
+      ]
     }
   ]
 }

@@ -252,6 +252,50 @@ body {
   transform: scale(1.06);
 }
 
+.festive-music-btn {
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--gold-light);
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.festive-music-btn:hover {
+  background: rgba(255, 215, 0, 0.22);
+  border-color: var(--gold-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+.festive-music-btn.playing {
+  background: linear-gradient(135deg, rgba(179, 27, 48, 0.45) 0%, rgba(212, 175, 55, 0.35) 100%);
+  border-color: rgba(255, 215, 0, 0.7);
+  color: #fff2a8;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.35);
+}
+
+.festive-music-btn.playing #music-icon {
+  display: inline-block;
+  animation: musicBounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes musicBounce {
+  0% { transform: scale(1) rotate(-8deg); }
+  100% { transform: scale(1.22) rotate(8deg); }
+}
+
 .main-title {
   display: flex;
   flex-direction: column;
@@ -787,6 +831,8 @@ body {
   background: rgba(179, 27, 48, 0.6);
   transform: scale(1.1);
 }
+
+.lock-pill.unlocked {
   background: rgba(0, 247, 165, 0.12);
   border: 1px solid rgba(0, 247, 165, 0.35);
   color: #00f7a5;

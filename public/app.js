@@ -222,8 +222,11 @@ function renderMembers() {
         <!-- Prominent Edit / Lock Action Buttons -->
         <div class="card-actions">
           ${isLocked ? `
-            <button class="btn-card-edit-main locked" onclick="handleCardEditClick('${member.id}')">
-              <span>🔒</span> Wishlist Locked (Tap to Unlock)
+            <button class="btn-card-edit-main locked" onclick="openLockModal('${member.id}', false, true)" title="Locked to protect wishes. Tap to unlock with password.">
+              <span>🔒</span> Locked (Tap to Unlock)
+            </button>
+            <button class="btn-card-lock-sm locked" onclick="openLockModal('${member.id}', false)" title="Unlock wishlist">
+              🔓
             </button>
           ` : `
             <button class="btn-card-edit-main" onclick="openEditModal('${member.id}')">
@@ -340,9 +343,7 @@ wishesForm.addEventListener('submit', async (e) => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        wishes: updatedWishes,
-        lockAfterSave,
-        password: '@admin123'
+        wishes: updatedWishes
       })
     });
 
@@ -354,11 +355,7 @@ wishesForm.addEventListener('submit', async (e) => {
       closeEditModal();
       renderAll();
 
-      if (lockAfterSave) {
-        showToast(`🔒 ${memberName}'s wishes saved and LOCKED!`);
-      } else {
-        showToast(`🎁 ${memberName}'s wishes saved successfully!`);
-      }
+      showToast(`🎁 ${memberName}'s wishes saved successfully!`);
       triggerConfetti();
     } else {
       showToast(`⚠️ Error: ${result.error || 'Failed to save'}`, 'error');
@@ -456,7 +453,7 @@ function openLockModal(memberId, targetLockState, openEditOnSuccess = false) {
     lockBtnText.textContent = 'Lock Wishlist';
   } else {
     lockModalTitle.textContent = '🔓 Unlock Wishlist';
-    lockModalDesc.textContent = 'Enter admin password to unlock this wishlist:';
+    lockModalDesc.textContent = 'Enter password to unlock this wishlist:';
     lockBtnIcon.textContent = '🔓';
     lockBtnText.textContent = openEditAfterUnlock ? 'Unlock & Edit' : 'Unlock Wishlist';
   }
@@ -705,11 +702,95 @@ btnToggleSnow.addEventListener('click', () => {
 });
 
 // -------------------------------------------------------------
+// 10. Christmas Background Music (Silent Night Instrumental)
+// -------------------------------------------------------------
+const bgMusic = document.getElementById('bg-music');
+const btnToggleMusic = document.getElementById('btn-toggle-music');
+const musicIcon = document.getElementById('music-icon');
+const musicText = document.getElementById('music-text');
+let isMusicPlaying = false;
+
+function setMusicUI(playing) {
+  isMusicPlaying = playing;
+  if (btnToggleMusic) {
+    if (playing) {
+      btnToggleMusic.classList.add('playing');
+      if (musicIcon) musicIcon.textContent = '🎶';
+      if (musicText) musicText.textContent = 'Silent Night';
+      btnToggleMusic.title = 'Pause Silent Night Instrumental';
+    } else {
+      btnToggleMusic.classList.remove('playing');
+      if (musicIcon) musicIcon.textContent = '🎵';
+      if (musicText) musicText.textContent = 'Play Music';
+      btnToggleMusic.title = 'Play Silent Night Instrumental';
+    }
+  }
+}
+
+async function playMusic() {
+  if (!bgMusic) return;
+  try {
+    bgMusic.volume = 0.35; // Gentle festive background volume
+    await bgMusic.play();
+    setMusicUI(true);
+    localStorage.setItem('doha_music_pref', 'play');
+  } catch (err) {
+    console.log('Autoplay waiting for user gesture');
+  }
+}
+
+function pauseMusic() {
+  if (!bgMusic) return;
+  bgMusic.pause();
+  setMusicUI(false);
+  localStorage.setItem('doha_music_pref', 'pause');
+}
+
+function toggleMusic() {
+  if (isMusicPlaying) {
+    pauseMusic();
+    showToast('⏸️ Music paused');
+  } else {
+    playMusic();
+    showToast('🎶 Playing Silent Night Instrumental');
+  }
+}
+
+if (btnToggleMusic) {
+  btnToggleMusic.addEventListener('click', toggleMusic);
+}
+
+function initMusic() {
+  if (!bgMusic) return;
+  bgMusic.volume = 0.35;
+  const pref = localStorage.getItem('doha_music_pref');
+
+  if (pref !== 'pause') {
+    const tryStart = () => {
+      playMusic();
+      document.removeEventListener('click', tryStart);
+      document.removeEventListener('touchstart', tryStart);
+    };
+
+    bgMusic.play().then(() => {
+      setMusicUI(true);
+    }).catch(() => {
+      // Modern browsers require initial interaction
+      document.addEventListener('click', tryStart, { once: true });
+      document.addEventListener('touchstart', tryStart, { once: true });
+    });
+  } else {
+    setMusicUI(false);
+  }
+}
+
+// -------------------------------------------------------------
 // Bootstrapping
 // -------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
   initSnow();
+  initMusic();
   fetchVault();
   checkStorageStatus();
 });
