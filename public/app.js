@@ -331,9 +331,22 @@ wishesForm.addEventListener('submit', async (e) => {
     showToast('⚠️ Error saving wishes', 'error');
   } finally {
     btnSave.disabled = false;
-    btnSave.innerHTML = `<span>💾</span> Save 3 Wishes`;
+    btnSave.innerHTML = `<span>💾</span> Save`;
   }
 });
+
+// Clear all fields handler (for when someone changes their mind)
+const btnClearWishes = document.getElementById('btn-clear-wishes');
+if (btnClearWishes) {
+  btnClearWishes.addEventListener('click', () => {
+    ['w1', 'w2', 'w3'].forEach(prefix => {
+      document.getElementById(`${prefix}-title`).value = '';
+      document.getElementById(`${prefix}-note`).value = '';
+      document.getElementById(`${prefix}-link`).value = '';
+    });
+    showToast('Cleared all slots. Tap "Save" to confirm.');
+  });
+}
 
 // Idea chip insertion
 document.querySelectorAll('.idea-tag').forEach(tag => {
