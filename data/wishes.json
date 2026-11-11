@@ -17,24 +17,28 @@
           "title": "Perfume Sauvage",
           "note": "100ml EDT",
           "link": "https://sephora.com",
-          "claimed": false
+          "claimed": false,
+          "locked": false
         },
         {
           "id": 2,
           "title": "",
           "note": "",
           "link": "",
-          "claimed": false
+          "claimed": false,
+          "locked": false
         },
         {
           "id": 3,
           "title": "",
           "note": "",
           "link": "",
-          "claimed": false
+          "claimed": false,
+          "locked": false
         }
       ],
-      "updatedAt": "2026-11-11T07:36:01.664Z"
+      "updatedAt": "2026-11-11T08:04:13.747Z",
+      "locked": false
     },
     {
       "id": "daniel",
@@ -62,7 +66,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "banjo",
@@ -90,7 +95,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "vonn",
@@ -118,7 +124,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "francis",
@@ -146,7 +153,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "denzel",
@@ -174,7 +182,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "kevin",
@@ -202,7 +211,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "jopet",
@@ -230,7 +240,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "jen",
@@ -258,7 +269,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "mira",
@@ -286,7 +298,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "zeus",
@@ -314,7 +327,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "maria",
@@ -342,7 +356,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "armi",
@@ -370,7 +385,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "belle",
@@ -398,7 +414,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     },
     {
       "id": "aron",
@@ -426,7 +443,8 @@
           "link": "",
           "claimed": false
         }
-      ]
+      ],
+      "locked": false
     }
   ]
 }

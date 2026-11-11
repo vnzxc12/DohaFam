@@ -9,9 +9,13 @@ CREATE TABLE IF NOT EXISTS public.wishlist_members (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   avatar TEXT NOT NULL DEFAULT '🎁',
+  locked BOOLEAN DEFAULT FALSE,
   wishes JSONB NOT NULL DEFAULT '[]'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Ensure locked column exists if table was already created
+ALTER TABLE public.wishlist_members ADD COLUMN IF NOT EXISTS locked BOOLEAN DEFAULT FALSE;
 
 -- 2. Enable Row Level Security (RLS)
 ALTER TABLE public.wishlist_members ENABLE ROW LEVEL SECURITY;

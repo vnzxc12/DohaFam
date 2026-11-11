@@ -23,17 +23,27 @@ const countAll = document.getElementById('count-all');
 const wishModal = document.getElementById('wish-modal');
 const wishesForm = document.getElementById('wishes-form');
 const btnToggleSnow = document.getElementById('btn-toggle-snow');
+const modalLockAfterSave = document.getElementById('modal-lock-after-save');
 
-// Supabase Status Modal
-const storageStatusBtn = document.getElementById('storage-status-btn');
-const statusDot = document.getElementById('status-dot');
-const statusLabel = document.getElementById('status-label');
-const supabaseModal = document.getElementById('supabase-modal');
-const sbStatusBox = document.getElementById('sb-status-box');
-const supabaseKeyForm = document.getElementById('supabase-key-form');
-const sbAnonKeyInput = document.getElementById('sb-anon-key-input');
-const btnCloseSb = document.getElementById('btn-close-sb');
-const btnCancelSb = document.getElementById('btn-cancel-sb');
+// Admin Lock / Unlock Modal Elements
+const lockModal = document.getElementById('lock-modal');
+const lockForm = document.getElementById('lock-form');
+const lockTargetMemberId = document.getElementById('lock-target-member-id');
+const lockTargetState = document.getElementById('lock-target-state');
+const lockPasswordInput = document.getElementById('lock-password-input');
+const lockErrorMsg = document.getElementById('lock-error-msg');
+const btnConfirmLock = document.getElementById('btn-confirm-lock');
+const lockBtnIcon = document.getElementById('lock-btn-icon');
+const lockBtnText = document.getElementById('lock-btn-text');
+const lockModalTitle = document.getElementById('lock-modal-title');
+const lockModalAvatar = document.getElementById('lock-modal-avatar');
+const lockModalMemberName = document.getElementById('lock-modal-member-name');
+const lockModalDesc = document.getElementById('lock-modal-desc');
+const btnTogglePwdVis = document.getElementById('btn-toggle-pwd-vis');
+const btnCloseLock = document.getElementById('btn-close-lock');
+const btnCancelLock = document.getElementById('btn-cancel-lock');
+
+let openEditAfterUnlock = false;
 
 // -------------------------------------------------------------
 // 1. Initial Load & Fetch
@@ -55,32 +65,9 @@ async function checkStorageStatus() {
   try {
     const res = await fetch('/api/status');
     storageStatus = await res.json();
-
-    if (storageStatus.supabaseConnected) {
-      statusDot.classList.add('connected');
-      statusLabel.textContent = 'Supabase Cloud';
-      statusLabel.title = 'Saved to Supabase database';
-    } else {
-      statusDot.classList.remove('connected');
-      statusLabel.textContent = 'Local Vault';
-      statusLabel.title = 'Saved locally. Click to connect Supabase.';
-    }
-
-    if (sbStatusBox) {
-      if (storageStatus.supabaseConnected) {
-        sbStatusBox.innerHTML = `
-          <span style="color:#00f7a5; font-weight:700;">🟢 Connected to Supabase</span><br>
-          <small style="color:#a3aba4;">All edits are automatically saved to your cloud database table <code>wishlist_members</code>.</small>
-        `;
-      } else {
-        sbStatusBox.innerHTML = `
-          <span style="color:#ffd700; font-weight:700;">🟡 Running on Local Storage</span><br>
-          <small style="color:#a3aba4;">Edits are currently saved locally. To sync to Supabase, paste your <code>anon</code> public API key below.</small>
-        `;
-      }
-    }
+    console.log('Vault storage engine:', storageStatus.storageType);
   } catch (e) {
-    console.warn('Storage status check failed:', e);
+    console.warn('Storage check warning:', e.message);
   }
 }
 
@@ -101,11 +88,13 @@ function renderQuickNav() {
     const wishes = m.wishes || [];
     const filledCount = wishes.filter(w => w.title && w.title.trim()).length;
     const isFull = filledCount === 3;
+    const isLocked = Boolean(m.locked);
 
     return `
-      <button class="nav-member-chip ${isFull ? 'full' : ''}" onclick="scrollToMember('${m.id}')">
+      <button class="nav-member-chip ${isFull ? 'full' : ''} ${isLocked ? 'chip-locked' : ''}" onclick="scrollToMember('${m.id}')">
         <span>${m.avatar || '🎅'}</span>
         <span>${escapeHtml(m.name)}</span>
+        ${isLocked ? '<span style="font-size:0.75rem;">🔒</span>' : ''}
       </button>
     `;
   }).join('');
@@ -149,10 +138,11 @@ function renderMembers() {
     const wishes = member.wishes || [];
     const filledCount = wishes.filter(w => w.title && w.title.trim()).length;
     const isFull = filledCount === 3;
+    const isLocked = Boolean(member.locked);
     const progressPercent = Math.round((filledCount / 3) * 100);
 
     return `
-      <div class="member-card" id="card-${member.id}" data-member-id="${member.id}">
+      <div class="member-card ${isLocked ? 'is-locked-card' : ''}" id="card-${member.id}" data-member-id="${member.id}">
         <div class="card-ribbon"></div>
         
         <div class="card-header">
@@ -162,8 +152,20 @@ function renderMembers() {
               <h3>${escapeHtml(member.name)}</h3>
             </div>
           </div>
-          <div class="wish-counter-badge ${isFull ? 'full' : ''}">
-            ${filledCount} / 3 Wishes ${isFull ? '⭐' : ''}
+
+          <div style="display:flex; align-items:center; gap:6px;">
+            ${isLocked ? `
+              <button class="lock-pill locked" onclick="event.stopPropagation(); openLockModal('${member.id}', false)" title="Wishlist is locked. Tap to unlock with password.">
+                <span>🔒</span> Locked
+              </button>
+            ` : `
+              <button class="lock-pill unlocked" onclick="event.stopPropagation(); openLockModal('${member.id}', true)" title="Wishlist is open. Tap to lock.">
+                <span>🔓</span> Open
+              </button>
+            `}
+            <div class="wish-counter-badge ${isFull ? 'full' : ''}">
+              ${filledCount} / 3 Wishes ${isFull ? '⭐' : ''}
+            </div>
           </div>
         </div>
 
@@ -180,22 +182,26 @@ function renderMembers() {
 
             if (!isFilled) {
               return `
-                <div class="wish-item empty" onclick="openEditModal('${member.id}')">
+                <div class="wish-item empty" onclick="handleCardEditClick('${member.id}')">
                   <div class="wish-header-line">
                     <span class="wish-slot-label">${slotName}</span>
-                    <button class="btn-slot-edit" onclick="event.stopPropagation(); openEditModal('${member.id}')">✏️ Add</button>
+                    <button class="btn-slot-edit" onclick="event.stopPropagation(); handleCardEditClick('${member.id}')">
+                      ${isLocked ? '🔒 Locked' : '✏️ Add'}
+                    </button>
                   </div>
-                  <div class="wish-empty">+ Tap to add wish</div>
+                  <div class="wish-empty">${isLocked ? '🔒 Wishlist is locked' : '+ Tap to add wish'}</div>
                 </div>
               `;
             }
 
             return `
-              <div class="wish-item filled ${wish.claimed ? 'claimed' : ''}" onclick="openEditModal('${member.id}')">
+              <div class="wish-item filled ${wish.claimed ? 'claimed' : ''}" onclick="handleCardEditClick('${member.id}')">
                 <div class="wish-header-line">
                   <span class="wish-slot-label">${slotName}</span>
                   <div>
-                    <button class="btn-slot-edit" onclick="event.stopPropagation(); openEditModal('${member.id}')">✏️ Edit</button>
+                    <button class="btn-slot-edit" onclick="event.stopPropagation(); handleCardEditClick('${member.id}')">
+                      ${isLocked ? '🔒 Locked' : '✏️ Edit'}
+                    </button>
                     ${wish.claimed ? `<span class="claim-tag">Claimed 🤫</span>` : ''}
                   </div>
                 </div>
@@ -217,11 +223,20 @@ function renderMembers() {
           }).join('')}
         </div>
 
-        <!-- Prominent Edit Wishlist Button -->
+        <!-- Prominent Edit / Lock Action Buttons -->
         <div class="card-actions">
-          <button class="btn-card-edit-main" onclick="openEditModal('${member.id}')">
-            <span>✏️</span> Edit ${escapeHtml(member.name)}'s Wishlist
-          </button>
+          ${isLocked ? `
+            <button class="btn-card-edit-main locked" onclick="handleCardEditClick('${member.id}')">
+              <span>🔒</span> Wishlist Locked (Tap to Unlock)
+            </button>
+          ` : `
+            <button class="btn-card-edit-main" onclick="openEditModal('${member.id}')">
+              <span>✏️</span> Edit ${escapeHtml(member.name)}'s Wishlist
+            </button>
+            <button class="btn-card-lock-action" onclick="openLockModal('${member.id}', true)" title="Lock this wishlist so no one can edit it">
+              <span>🔒</span> Lock
+            </button>
+          `}
         </div>
       </div>
     `;
@@ -229,8 +244,20 @@ function renderMembers() {
 }
 
 // -------------------------------------------------------------
-// 3. Edit Wishes Modal
+// 3. Edit Wishes Modal & Lock Interception
 // -------------------------------------------------------------
+
+function handleCardEditClick(memberId) {
+  const member = vaultData.members.find(m => m.id === memberId);
+  if (!member) return;
+
+  if (member.locked) {
+    // Open password modal to unlock, and open edit modal immediately after
+    openLockModal(memberId, false, true);
+  } else {
+    openEditModal(memberId);
+  }
+}
 
 function openEditModal(memberId) {
   const member = vaultData.members.find(m => m.id === memberId);
@@ -240,6 +267,10 @@ function openEditModal(memberId) {
   document.getElementById('edit-member-id').value = member.id;
   document.getElementById('modal-avatar').textContent = member.avatar || '🎅';
   document.getElementById('modal-title').textContent = `${member.name}'s Wishlist`;
+
+  if (modalLockAfterSave) {
+    modalLockAfterSave.checked = Boolean(member.locked);
+  }
 
   const wishes = member.wishes || [];
 
@@ -279,6 +310,8 @@ wishesForm.addEventListener('submit', async (e) => {
   btnSave.disabled = true;
   btnSave.innerHTML = `<span>⏳</span> Saving Wishes...`;
 
+  const lockAfterSave = Boolean(modalLockAfterSave && modalLockAfterSave.checked);
+
   const updatedWishes = [
     {
       id: 1,
@@ -310,7 +343,11 @@ wishesForm.addEventListener('submit', async (e) => {
     const res = await fetch(`/api/members/${memberId}/wishes`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ wishes: updatedWishes })
+      body: JSON.stringify({
+        wishes: updatedWishes,
+        lockAfterSave,
+        password: '@admin123'
+      })
     });
 
     const result = await res.json();
@@ -321,10 +358,11 @@ wishesForm.addEventListener('submit', async (e) => {
       closeEditModal();
       renderAll();
 
-      const storageNote = result.savedTo && result.savedTo.supabase
-        ? 'Saved to Supabase cloud!'
-        : 'Saved successfully!';
-      showToast(`🎁 ${memberName}'s wishes saved! (${storageNote})`);
+      if (lockAfterSave) {
+        showToast(`🔒 ${memberName}'s wishes saved and LOCKED!`);
+      } else {
+        showToast(`🎁 ${memberName}'s wishes saved successfully!`);
+      }
       triggerConfetti();
     } else {
       showToast(`⚠️ Error: ${result.error || 'Failed to save'}`, 'error');
@@ -401,40 +439,118 @@ async function toggleClaim(memberId, wishId) {
 }
 
 // -------------------------------------------------------------
-// 5. Supabase Modal Handlers
+// 5. Admin Lock / Unlock Handlers (@admin123)
 // -------------------------------------------------------------
 
-storageStatusBtn.addEventListener('click', () => {
-  supabaseModal.classList.add('open');
-});
+function openLockModal(memberId, targetLockState, openEditOnSuccess = false) {
+  const member = vaultData.members.find(m => m.id === memberId);
+  if (!member) return;
 
-btnCloseSb.addEventListener('click', () => supabaseModal.classList.remove('open'));
-btnCancelSb.addEventListener('click', () => supabaseModal.classList.remove('open'));
+  openEditAfterUnlock = Boolean(openEditOnSuccess);
+  lockTargetMemberId.value = member.id;
+  lockTargetState.value = String(targetLockState);
 
-supabaseKeyForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const anonKey = sbAnonKeyInput.value.trim();
-  if (!anonKey) return;
+  lockModalAvatar.textContent = member.avatar || '🎅';
+  lockModalMemberName.textContent = `${member.name}'s Wishlist`;
 
-  try {
-    const res = await fetch('/api/config/supabase', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ anonKey })
-    });
-    const result = await res.json();
-    if (result.success) {
-      showToast('☁️ Connected to Supabase successfully!');
-      supabaseModal.classList.remove('open');
-      checkStorageStatus();
-      fetchVault();
-    } else {
-      showToast(`⚠️ ${result.error}`, 'error');
-    }
-  } catch (err) {
-    showToast('⚠️ Failed to connect Supabase', 'error');
+  if (targetLockState) {
+    lockModalTitle.textContent = '🔒 Lock Wishlist';
+    lockModalDesc.textContent = 'Lock to protect wishes from edits. Requires password:';
+    lockBtnIcon.textContent = '🔒';
+    lockBtnText.textContent = 'Lock Wishlist';
+  } else {
+    lockModalTitle.textContent = '🔓 Unlock Wishlist';
+    lockModalDesc.textContent = 'Enter admin password to unlock this wishlist:';
+    lockBtnIcon.textContent = '🔓';
+    lockBtnText.textContent = openEditAfterUnlock ? 'Unlock & Edit' : 'Unlock Wishlist';
   }
-});
+
+  lockPasswordInput.value = '';
+  lockPasswordInput.type = 'password';
+  btnTogglePwdVis.textContent = '👁️';
+  lockErrorMsg.style.display = 'none';
+  lockErrorMsg.textContent = '';
+
+  lockModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => lockPasswordInput.focus(), 150);
+}
+
+function closeLockModal() {
+  lockModal.classList.remove('open');
+  document.body.style.overflow = '';
+  lockPasswordInput.value = '';
+  lockErrorMsg.style.display = 'none';
+  openEditAfterUnlock = false;
+}
+
+if (btnCloseLock) btnCloseLock.addEventListener('click', closeLockModal);
+if (btnCancelLock) btnCancelLock.addEventListener('click', closeLockModal);
+
+// Toggle password visibility
+if (btnTogglePwdVis) {
+  btnTogglePwdVis.addEventListener('click', () => {
+    if (lockPasswordInput.type === 'password') {
+      lockPasswordInput.type = 'text';
+      btnTogglePwdVis.textContent = '🙈';
+    } else {
+      lockPasswordInput.type = 'password';
+      btnTogglePwdVis.textContent = '👁️';
+    }
+  });
+}
+
+// Lock form submit handler
+if (lockForm) {
+  lockForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const memberId = lockTargetMemberId.value;
+    const targetLocked = lockTargetState.value === 'true';
+    const password = lockPasswordInput.value.trim();
+
+    btnConfirmLock.disabled = true;
+    btnConfirmLock.innerHTML = `<span>⏳</span> Verifying...`;
+    lockErrorMsg.style.display = 'none';
+
+    try {
+      const res = await fetch(`/api/members/${memberId}/lock`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, locked: targetLocked })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        const m = vaultData.members.find(item => item.id === memberId);
+        if (m) m.locked = targetLocked;
+
+        const shouldOpenEdit = openEditAfterUnlock;
+        closeLockModal();
+        renderAll();
+
+        if (targetLocked) {
+          showToast(`🔒 ${m ? m.name : 'Member'}'s wishlist is now LOCKED!`);
+        } else {
+          showToast(`🔓 ${m ? m.name : 'Member'}'s wishlist is UNLOCKED!`);
+          if (shouldOpenEdit) {
+            openEditModal(memberId);
+          }
+        }
+      } else {
+        lockErrorMsg.textContent = result.error || 'Incorrect password! Password is @admin123';
+        lockErrorMsg.style.display = 'block';
+        lockPasswordInput.focus();
+        lockPasswordInput.select();
+      }
+    } catch (err) {
+      lockErrorMsg.textContent = 'Network error verifying password.';
+      lockErrorMsg.style.display = 'block';
+    } finally {
+      btnConfirmLock.disabled = false;
+      btnConfirmLock.innerHTML = `<span id="lock-btn-icon">${targetLocked ? '🔒' : '🔓'}</span> <span id="lock-btn-text">${targetLocked ? 'Lock Wishlist' : 'Unlock Wishlist'}</span>`;
+    }
+  });
+}
 
 // -------------------------------------------------------------
 // 6. Modal Close Handlers
@@ -443,13 +559,15 @@ supabaseKeyForm.addEventListener('submit', async (e) => {
 document.getElementById('btn-close-modal').addEventListener('click', closeEditModal);
 document.getElementById('btn-cancel-modal').addEventListener('click', closeEditModal);
 
-[wishModal, supabaseModal].forEach(modal => {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
+[wishModal, lockModal].forEach(modal => {
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+  }
 });
 
 // -------------------------------------------------------------

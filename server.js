@@ -14,6 +14,7 @@ const TMP_DATA_FILE = path.join(os.tmpdir(), 'doha_wishes.json');
 // Supabase setup
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://nkctcwwbgqrqmfcqfksa.supabase.co';
 let SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '@admin123';
 let supabase = null;
 
 function initSupabase() {
@@ -146,13 +147,18 @@ app.get('/api/vault', async (req, res) => {
         .order('name');
 
       if (!error && data && data.length > 0) {
-        const cloudMembers = data.map(row => ({
-          id: row.id,
-          name: row.name,
-          avatar: row.avatar,
-          updatedAt: row.updated_at,
-          wishes: row.wishes || []
-        }));
+        const cloudMembers = data.map(row => {
+          const wishes = row.wishes || [];
+          const isLocked = Boolean(row.locked !== undefined ? row.locked : wishes.some(w => w.locked));
+          return {
+            id: row.id,
+            name: row.name,
+            avatar: row.avatar,
+            locked: isLocked,
+            updatedAt: row.updated_at,
+            wishes: wishes
+          };
+        });
 
         localData.members = cloudMembers;
         writeLocalData(localData);
@@ -169,7 +175,7 @@ app.get('/api/vault', async (req, res) => {
 // UPDATE wishes for a specific member
 app.put('/api/members/:id/wishes', async (req, res) => {
   const { id } = req.params;
-  const { wishes } = req.body;
+  const { wishes, password, lockAfterSave } = req.body;
 
   if (!Array.isArray(wishes)) {
     return res.status(400).json({ error: 'wishes must be an array' });
@@ -182,12 +188,32 @@ app.put('/api/members/:id/wishes', async (req, res) => {
     return res.status(404).json({ error: 'Member not found' });
   }
 
+  const member = data.members[memberIndex];
+  const isCurrentlyLocked = Boolean(member.locked);
+
+  // If already locked, verify admin password before editing
+  if (isCurrentlyLocked) {
+    if (password !== ADMIN_PASSWORD) {
+      return res.status(403).json({
+        error: '🔒 This wishlist is locked! Enter password @admin123 to make changes.',
+        isLocked: true
+      });
+    }
+  }
+
+  // Determine target lock state
+  let finalLockState = isCurrentlyLocked;
+  if (lockAfterSave !== undefined) {
+    finalLockState = Boolean(lockAfterSave);
+  }
+
   const sanitizedWishes = wishes.slice(0, 3).map((w, index) => ({
     id: index + 1,
     title: (w.title || '').trim(),
     note: (w.note || '').trim(),
     link: (w.link || '').trim(),
-    claimed: Boolean(w.claimed)
+    claimed: Boolean(w.claimed),
+    locked: finalLockState
   }));
 
   while (sanitizedWishes.length < 3) {
@@ -196,13 +222,15 @@ app.put('/api/members/:id/wishes', async (req, res) => {
       title: '',
       note: '',
       link: '',
-      claimed: false
+      claimed: false,
+      locked: finalLockState
     });
   }
 
   const nowIso = new Date().toISOString();
-  data.members[memberIndex].wishes = sanitizedWishes;
-  data.members[memberIndex].updatedAt = nowIso;
+  member.wishes = sanitizedWishes;
+  member.locked = finalLockState;
+  member.updatedAt = nowIso;
 
   const localSaved = writeLocalData(data);
   let supabaseSaved = false;
@@ -212,9 +240,9 @@ app.put('/api/members/:id/wishes', async (req, res) => {
       const { error } = await supabase
         .from('wishlist_members')
         .upsert({
-          id: data.members[memberIndex].id,
-          name: data.members[memberIndex].name,
-          avatar: data.members[memberIndex].avatar,
+          id: member.id,
+          name: member.name,
+          avatar: member.avatar,
           wishes: sanitizedWishes,
           updated_at: nowIso
         });
@@ -229,15 +257,76 @@ app.put('/api/members/:id/wishes', async (req, res) => {
     }
   }
 
-  console.log(`💾 Saved wishes for ${data.members[memberIndex].name} (Local: ${localSaved}, Supabase: ${supabaseSaved})`);
+  console.log(`💾 Saved wishes for ${member.name} (Locked: ${finalLockState}, Local: ${localSaved}, Supabase: ${supabaseSaved})`);
 
   res.json({
     success: true,
-    member: data.members[memberIndex],
+    member,
     savedTo: {
       local: localSaved,
       supabase: supabaseSaved
     }
+  });
+});
+
+// TOGGLE LOCK on a member's wishlist (requires admin password)
+app.post('/api/members/:id/lock', async (req, res) => {
+  const { id } = req.params;
+  const { password, locked } = req.body;
+
+  if (password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Incorrect password! Password is @admin123' });
+  }
+
+  const data = readLocalData();
+  const memberIndex = data.members.findIndex(m => m.id.toLowerCase() === id.toLowerCase());
+
+  if (memberIndex === -1) {
+    return res.status(404).json({ error: 'Member not found' });
+  }
+
+  const member = data.members[memberIndex];
+  const targetLockState = Boolean(locked);
+  member.locked = targetLockState;
+
+  if (Array.isArray(member.wishes)) {
+    member.wishes.forEach(w => {
+      w.locked = targetLockState;
+    });
+  }
+
+  const nowIso = new Date().toISOString();
+  member.updatedAt = nowIso;
+
+  const localSaved = writeLocalData(data);
+  let supabaseSaved = false;
+
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('wishlist_members')
+        .update({
+          wishes: member.wishes,
+          updated_at: nowIso
+        })
+        .eq('id', member.id);
+
+      if (!error) {
+        supabaseSaved = true;
+      } else {
+        console.warn('Supabase lock update warning:', error.message);
+      }
+    } catch (e) {
+      console.warn('Supabase sync error:', e.message);
+    }
+  }
+
+  console.log(`🔐 Lock status updated for ${member.name}: ${targetLockState ? 'LOCKED' : 'UNLOCKED'} (Local: ${localSaved}, Supabase: ${supabaseSaved})`);
+
+  res.json({
+    success: true,
+    locked: targetLockState,
+    member
   });
 });
 

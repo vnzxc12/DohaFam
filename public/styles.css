@@ -698,6 +698,7 @@ body {
 
 .btn-card-edit-main {
   width: 100%;
+  flex: 1;
   background: linear-gradient(135deg, #ffd700 0%, #d4af37 60%, #b8860b 100%);
   color: #1a1402;
   border: none;
@@ -724,6 +725,195 @@ body {
 
 .btn-card-edit-main:active {
   transform: translateY(1px);
+}
+
+.btn-card-edit-main.locked {
+  background: linear-gradient(135deg, #2b1f15 0%, #1c140d 100%);
+  color: #ffd700;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-card-edit-main.locked:hover {
+  background: linear-gradient(135deg, #38291b 0%, #261b12 100%);
+  border-color: #ffd700;
+}
+
+.btn-card-lock-action {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--gold-light);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  min-height: 48px;
+  white-space: nowrap;
+}
+
+.btn-card-lock-action:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold-primary);
+  transform: translateY(-2px);
+}
+
+/* Lock Status Pills */
+.lock-pill {
+  border: none;
+  border-radius: 12px;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.lock-pill.locked {
+  background: rgba(179, 27, 48, 0.35);
+  border: 1px solid rgba(255, 80, 100, 0.5);
+  color: #ffb8c1;
+}
+
+.lock-pill.locked:hover {
+  background: rgba(179, 27, 48, 0.55);
+  transform: scale(1.04);
+}
+
+.lock-pill.unlocked {
+  background: rgba(0, 247, 165, 0.12);
+  border: 1px solid rgba(0, 247, 165, 0.35);
+  color: #00f7a5;
+}
+
+.lock-pill.unlocked:hover {
+  background: rgba(0, 247, 165, 0.24);
+  transform: scale(1.04);
+}
+
+.is-locked-card {
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+.nav-member-chip.chip-locked {
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+/* Lock Option Inside Edit Modal */
+.lock-option-card {
+  background: rgba(255, 215, 0, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.lock-option-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.lock-checkbox {
+  width: 22px;
+  height: 22px;
+  accent-color: #ffd700;
+  cursor: pointer;
+}
+
+.lock-option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.lock-option-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--gold-light);
+}
+
+.lock-option-sub {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Lock / Password Dialog Elements */
+.lock-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.lock-banner-avatar {
+  font-size: 2.2rem;
+}
+
+.lock-banner-info h4 {
+  font-family: var(--font-display);
+  color: var(--gold-light);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.lock-banner-info p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 3px 0 0;
+}
+
+.password-input-wrap {
+  position: relative;
+}
+
+.password-hint {
+  font-size: 0.76rem;
+  color: var(--gold-light);
+  opacity: 0.9;
+}
+
+.password-hint code {
+  background: rgba(212, 175, 55, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #ffd700;
+  font-weight: 700;
+}
+
+.btn-pwd-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.btn-pwd-eye:hover {
+  opacity: 1;
+}
+
+.lock-error-text {
+  color: #ff4d6d;
+  font-size: 0.82rem;
+  margin-top: 6px;
+  font-weight: 600;
 }
 
 /* ==========================================================
