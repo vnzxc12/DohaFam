@@ -9,21 +9,29 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'wishes.json');
-const TMP_DATA_FILE = path.join(os.tmpdir(), 'wishes.json');
+const TMP_DATA_FILE = path.join(os.tmpdir(), 'doha_wishes.json');
 
 // Supabase setup
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://nkctcwwbgqrqmfcqfksa.supabase.co';
 let SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
 let supabase = null;
 
-if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-  try {
-    supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log(`✨ Supabase client initialized for: ${SUPABASE_URL}`);
-  } catch (err) {
-    console.warn(`⚠️ Supabase init warning: ${err.message}`);
+function initSupabase() {
+  if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+    try {
+      supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      console.log(`✨ Supabase client initialized for: ${SUPABASE_URL}`);
+      return true;
+    } catch (err) {
+      console.warn(`⚠️ Supabase init warning: ${err.message}`);
+      supabase = null;
+      return false;
+    }
   }
+  return false;
 }
+
+initSupabase();
 
 app.use(cors());
 app.use(express.json());
@@ -32,7 +40,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Read local/tmp data
 function readLocalData() {
   try {
-    // If in Vercel and tmp copy exists, read that
     if (process.env.VERCEL && fs.existsSync(TMP_DATA_FILE)) {
       return JSON.parse(fs.readFileSync(TMP_DATA_FILE, 'utf-8'));
     }
@@ -70,6 +77,63 @@ function getLocalIPs() {
   return addresses;
 }
 
+// GET storage status (checks if Supabase is connected)
+app.get('/api/status', async (req, res) => {
+  let supabaseConnected = false;
+  let supabaseMessage = 'Not configured';
+
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('wishlist_members').select('id').limit(1);
+      if (!error) {
+        supabaseConnected = true;
+        supabaseMessage = 'Connected & Syncing';
+      } else {
+        supabaseMessage = `Error: ${error.message}`;
+      }
+    } catch (e) {
+      supabaseMessage = e.message;
+    }
+  }
+
+  res.json({
+    supabaseUrl: SUPABASE_URL,
+    supabaseConfigured: Boolean(SUPABASE_ANON_KEY),
+    supabaseConnected,
+    supabaseMessage,
+    storageType: supabaseConnected ? 'supabase' : 'local'
+  });
+});
+
+// Configure Supabase Anon Key dynamically
+app.post('/api/config/supabase', async (req, res) => {
+  const { anonKey } = req.body;
+  if (!anonKey || !anonKey.trim()) {
+    return res.status(400).json({ error: 'Anon key is required' });
+  }
+
+  try {
+    SUPABASE_ANON_KEY = anonKey.trim();
+    initSupabase();
+
+    // Verify connection
+    const { error } = await supabase.from('wishlist_members').select('id').limit(1);
+    if (error) {
+      return res.status(400).json({ error: `Connection failed: ${error.message}. Make sure you ran schema.sql in Supabase!` });
+    }
+
+    // Save to .env locally if not in Vercel
+    if (!process.env.VERCEL) {
+      const envContent = `PORT=${PORT}\nSUPABASE_URL=${SUPABASE_URL}\nSUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}\n`;
+      fs.writeFileSync(path.join(__dirname, '.env'), envContent, 'utf-8');
+    }
+
+    res.json({ success: true, message: 'Connected to Supabase cloud database!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET entire vault data
 app.get('/api/vault', async (req, res) => {
   const localData = readLocalData();
@@ -100,20 +164,6 @@ app.get('/api/vault', async (req, res) => {
   }
 
   res.json({ ...localData, storageSource: 'local' });
-});
-
-// GET network info
-app.get('/api/network-info', (req, res) => {
-  const ips = getLocalIPs();
-  const primaryIP = ips.find(ip => ip.startsWith('10.') || ip.startsWith('192.168.')) || ips[0] || 'localhost';
-  res.json({
-    port: PORT,
-    ips,
-    primaryIP,
-    mobileUrl: `http://${primaryIP}:${PORT}`,
-    supabaseConfigured: Boolean(supabase),
-    supabaseUrl: SUPABASE_URL
-  });
 });
 
 // UPDATE wishes for a specific member
@@ -154,11 +204,12 @@ app.put('/api/members/:id/wishes', async (req, res) => {
   data.members[memberIndex].wishes = sanitizedWishes;
   data.members[memberIndex].updatedAt = nowIso;
 
-  writeLocalData(data);
+  const localSaved = writeLocalData(data);
+  let supabaseSaved = false;
 
   if (supabase) {
     try {
-      await supabase
+      const { error } = await supabase
         .from('wishlist_members')
         .upsert({
           id: data.members[memberIndex].id,
@@ -167,12 +218,27 @@ app.put('/api/members/:id/wishes', async (req, res) => {
           wishes: sanitizedWishes,
           updated_at: nowIso
         });
+
+      if (!error) {
+        supabaseSaved = true;
+      } else {
+        console.warn('Supabase upsert warning:', error.message);
+      }
     } catch (e) {
       console.warn('Supabase sync error:', e.message);
     }
   }
 
-  res.json({ success: true, member: data.members[memberIndex] });
+  console.log(`💾 Saved wishes for ${data.members[memberIndex].name} (Local: ${localSaved}, Supabase: ${supabaseSaved})`);
+
+  res.json({
+    success: true,
+    member: data.members[memberIndex],
+    savedTo: {
+      local: localSaved,
+      supabase: supabaseSaved
+    }
+  });
 });
 
 // TOGGLE claim on a wish
@@ -212,7 +278,6 @@ app.post('/api/members/:id/claim', async (req, res) => {
   res.json({ success: true, wish, member });
 });
 
-// Start local server if not running on Vercel
 if (!process.env.VERCEL) {
   app.listen(PORT, '0.0.0.0', () => {
     const ips = getLocalIPs();

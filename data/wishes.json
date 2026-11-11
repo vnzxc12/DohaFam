@@ -405,6 +405,35 @@
           "claimed": false
         }
       ]
+    },
+    {
+      "id": "aron",
+      "name": "Aron",
+      "avatar": "🎉",
+      "wishes": [
+        {
+          "id": 1,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 2,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        },
+        {
+          "id": 3,
+          "title": "",
+          "note": "",
+          "link": "",
+          "claimed": false
+        }
+      ],
+      "updatedAt": "2026-11-11T07:18:04.876Z"
     }
   ]
 }

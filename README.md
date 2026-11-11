@@ -46,3 +46,4 @@ npm start
 
 ## 🗄️ Supabase Setup
 Run the SQL queries in [`schema.sql`](./schema.sql) in your [Supabase SQL Editor](https://supabase.com/dashboard/project/nkctcwwbgqrqmfcqfksa/sql) to set up the `wishlist_members` table and seed the initial members.
+

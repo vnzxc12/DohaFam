@@ -1,6 +1,6 @@
 /**
  * DOHA FAM CHRISTMAS PARTY 2026 — VAULT APP
- * Mobile-First, Smooth Scroll Navigation, 14 Members
+ * Mobile-First, Smooth Scroll Navigation, 15 Members, Prominent Edit Buttons
  */
 
 // State
@@ -9,6 +9,7 @@ let currentFilter = 'all';
 let searchQuery = '';
 let isSnowing = true;
 let activeMember = null;
+let storageStatus = null;
 
 // DOM Elements
 const membersGrid = document.getElementById('members-grid');
@@ -23,6 +24,17 @@ const wishModal = document.getElementById('wish-modal');
 const wishesForm = document.getElementById('wishes-form');
 const btnToggleSnow = document.getElementById('btn-toggle-snow');
 
+// Supabase Status Modal
+const storageStatusBtn = document.getElementById('storage-status-btn');
+const statusDot = document.getElementById('status-dot');
+const statusLabel = document.getElementById('status-label');
+const supabaseModal = document.getElementById('supabase-modal');
+const sbStatusBox = document.getElementById('sb-status-box');
+const supabaseKeyForm = document.getElementById('supabase-key-form');
+const sbAnonKeyInput = document.getElementById('sb-anon-key-input');
+const btnCloseSb = document.getElementById('btn-close-sb');
+const btnCancelSb = document.getElementById('btn-cancel-sb');
+
 // -------------------------------------------------------------
 // 1. Initial Load & Fetch
 // -------------------------------------------------------------
@@ -36,6 +48,39 @@ async function fetchVault() {
   } catch (err) {
     console.error('Failed to load vault data:', err);
     showToast('⚠️ Could not connect to vault server', 'error');
+  }
+}
+
+async function checkStorageStatus() {
+  try {
+    const res = await fetch('/api/status');
+    storageStatus = await res.json();
+
+    if (storageStatus.supabaseConnected) {
+      statusDot.classList.add('connected');
+      statusLabel.textContent = 'Supabase Cloud';
+      statusLabel.title = 'Saved to Supabase database';
+    } else {
+      statusDot.classList.remove('connected');
+      statusLabel.textContent = 'Local Vault';
+      statusLabel.title = 'Saved locally. Click to connect Supabase.';
+    }
+
+    if (sbStatusBox) {
+      if (storageStatus.supabaseConnected) {
+        sbStatusBox.innerHTML = `
+          <span style="color:#00f7a5; font-weight:700;">🟢 Connected to Supabase</span><br>
+          <small style="color:#a3aba4;">All edits are automatically saved to your cloud database table <code>wishlist_members</code>.</small>
+        `;
+      } else {
+        sbStatusBox.innerHTML = `
+          <span style="color:#ffd700; font-weight:700;">🟡 Running on Local Storage</span><br>
+          <small style="color:#a3aba4;">Edits are currently saved locally. To sync to Supabase, paste your <code>anon</code> public API key below.</small>
+        `;
+      }
+    }
+  } catch (e) {
+    console.warn('Storage status check failed:', e);
   }
 }
 
@@ -71,7 +116,7 @@ function scrollToMember(memberId) {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     el.classList.remove('highlight-pulse');
-    void el.offsetWidth; // trigger reflow
+    void el.offsetWidth;
     el.classList.add('highlight-pulse');
   }
 }
@@ -138,6 +183,7 @@ function renderMembers() {
                 <div class="wish-item empty" onclick="openEditModal('${member.id}')">
                   <div class="wish-header-line">
                     <span class="wish-slot-label">${slotName}</span>
+                    <button class="btn-slot-edit" onclick="event.stopPropagation(); openEditModal('${member.id}')">✏️ Add</button>
                   </div>
                   <div class="wish-empty">+ Tap to add wish</div>
                 </div>
@@ -148,7 +194,10 @@ function renderMembers() {
               <div class="wish-item filled ${wish.claimed ? 'claimed' : ''}" onclick="openEditModal('${member.id}')">
                 <div class="wish-header-line">
                   <span class="wish-slot-label">${slotName}</span>
-                  ${wish.claimed ? `<span class="claim-tag">Claimed 🤫</span>` : ''}
+                  <div>
+                    <button class="btn-slot-edit" onclick="event.stopPropagation(); openEditModal('${member.id}')">✏️ Edit</button>
+                    ${wish.claimed ? `<span class="claim-tag">Claimed 🤫</span>` : ''}
+                  </div>
                 </div>
                 <div class="wish-title">${escapeHtml(wish.title)}</div>
                 
@@ -168,9 +217,10 @@ function renderMembers() {
           }).join('')}
         </div>
 
+        <!-- Prominent Edit Wishlist Button -->
         <div class="card-actions">
-          <button class="btn-edit-card" onclick="openEditModal('${member.id}')">
-            <span>✏️</span> Edit Wishes
+          <button class="btn-card-edit-main" onclick="openEditModal('${member.id}')">
+            <span>✏️</span> Edit ${escapeHtml(member.name)}'s Wishlist
           </button>
         </div>
       </div>
@@ -227,7 +277,7 @@ wishesForm.addEventListener('submit', async (e) => {
 
   const btnSave = document.getElementById('btn-save-wishes');
   btnSave.disabled = true;
-  btnSave.innerHTML = `<span>⏳</span> Saving...`;
+  btnSave.innerHTML = `<span>⏳</span> Saving Wishes...`;
 
   const updatedWishes = [
     {
@@ -267,7 +317,11 @@ wishesForm.addEventListener('submit', async (e) => {
 
       closeEditModal();
       renderAll();
-      showToast(`🎁 ${activeMember.name}'s wishes saved!`);
+
+      const storageNote = result.savedTo && result.savedTo.supabase
+        ? 'Saved to Supabase cloud!'
+        : 'Saved successfully!';
+      showToast(`🎁 ${activeMember.name}'s wishes saved! (${storageNote})`);
       triggerConfetti();
     } else {
       showToast(`⚠️ Error: ${result.error || 'Failed to save'}`, 'error');
@@ -277,7 +331,7 @@ wishesForm.addEventListener('submit', async (e) => {
     showToast('⚠️ Error saving wishes', 'error');
   } finally {
     btnSave.disabled = false;
-    btnSave.innerHTML = `<span>🎁</span> Save Wishes`;
+    btnSave.innerHTML = `<span>💾</span> Save 3 Wishes`;
   }
 });
 
@@ -331,18 +385,59 @@ async function toggleClaim(memberId, wishId) {
 }
 
 // -------------------------------------------------------------
-// 5. Modal Close Handlers
+// 5. Supabase Modal Handlers
+// -------------------------------------------------------------
+
+storageStatusBtn.addEventListener('click', () => {
+  supabaseModal.classList.add('open');
+});
+
+btnCloseSb.addEventListener('click', () => supabaseModal.classList.remove('open'));
+btnCancelSb.addEventListener('click', () => supabaseModal.classList.remove('open'));
+
+supabaseKeyForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const anonKey = sbAnonKeyInput.value.trim();
+  if (!anonKey) return;
+
+  try {
+    const res = await fetch('/api/config/supabase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ anonKey })
+    });
+    const result = await res.json();
+    if (result.success) {
+      showToast('☁️ Connected to Supabase successfully!');
+      supabaseModal.classList.remove('open');
+      checkStorageStatus();
+      fetchVault();
+    } else {
+      showToast(`⚠️ ${result.error}`, 'error');
+    }
+  } catch (err) {
+    showToast('⚠️ Failed to connect Supabase', 'error');
+  }
+});
+
+// -------------------------------------------------------------
+// 6. Modal Close Handlers
 // -------------------------------------------------------------
 
 document.getElementById('btn-close-modal').addEventListener('click', closeEditModal);
 document.getElementById('btn-cancel-modal').addEventListener('click', closeEditModal);
 
-wishModal.addEventListener('click', (e) => {
-  if (e.target === wishModal) closeEditModal();
+[wishModal, supabaseModal].forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
 });
 
 // -------------------------------------------------------------
-// 6. Search & Filter
+// 7. Search & Filter
 // -------------------------------------------------------------
 
 searchInput.addEventListener('input', (e) => {
@@ -368,7 +463,7 @@ filterPills.forEach(pill => {
 });
 
 // -------------------------------------------------------------
-// 7. Toast & Confetti
+// 8. Toast & Confetti
 // -------------------------------------------------------------
 
 function showToast(msg, type = 'success') {
@@ -409,7 +504,7 @@ function escapeHtml(str) {
 }
 
 // -------------------------------------------------------------
-// 8. Snow Canvas
+// 9. Snow Canvas
 // -------------------------------------------------------------
 
 const canvas = document.getElementById('snow-canvas');
@@ -481,4 +576,5 @@ btnToggleSnow.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   initSnow();
   fetchVault();
+  checkStorageStatus();
 });

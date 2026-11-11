@@ -44,7 +44,8 @@ VALUES
   ('zeus', 'Zeus', '⚡', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb),
   ('maria', 'Maria', '🕯️', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb),
   ('armi', 'Armi', '🧣', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb),
-  ('belle', 'Belle', '❄️', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb)
+  ('belle', 'Belle', '❄️', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb),
+  ('aron', 'Aron', '🎉', '[{"id": 1, "title": "", "note": "", "link": "", "claimed": false}, {"id": 2, "title": "", "note": "", "link": "", "claimed": false}, {"id": 3, "title": "", "note": "", "link": "", "claimed": false}]'::jsonb)
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   avatar = EXCLUDED.avatar;

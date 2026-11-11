@@ -37,6 +37,13 @@
           <span class="badge-text">CHRISTMAS 2026</span>
           <span class="badge-icon">🎅</span>
         </div>
+
+        <!-- Database Storage Status Badge -->
+        <button class="storage-badge" id="storage-status-btn" title="Database Connection Status">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-label" id="status-label">Local Vault</span>
+        </button>
+
         <button id="btn-toggle-snow" class="btn-icon" title="Toggle Snowfall">
           <span id="snow-icon">❄️</span>
         </button>
@@ -49,24 +56,24 @@
       </h1>
 
       <p class="hero-subtitle">
-        Tap on your card to fill in your <strong>3 Christmas Wishes</strong>! 🎁
+        Tap <strong>"✏️ Edit Wishlist"</strong> under your name to save your 3 wishes! 🎁
       </p>
 
-      <!-- Quick Name Jump Navigation (Smooth Scroll on Mobile) -->
+      <!-- Quick Name Jump Navigation -->
       <nav class="quick-nav-bar" id="quick-nav-bar" aria-label="Fam Members Quick Nav">
-        <!-- Rendered dynamically for all 14 members -->
+        <!-- Rendered dynamically for all 15 members -->
       </nav>
 
       <!-- Search & Filters -->
       <div class="filter-bar">
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" id="search-input" placeholder="Search name (Jon, Daniel, Mira, Zeus...)" autocomplete="off">
+          <input type="text" id="search-input" placeholder="Search name (Jon, Daniel, Aron, Mira, Zeus...)" autocomplete="off">
           <button id="search-clear" class="clear-btn" style="display:none;">✕</button>
         </div>
 
         <div class="filter-pills">
-          <button class="filter-pill active" data-filter="all">All (<span id="count-all">14</span>)</button>
+          <button class="filter-pill active" data-filter="all">All (<span id="count-all">15</span>)</button>
           <button class="filter-pill" data-filter="complete">Full (3/3)</button>
           <button class="filter-pill" data-filter="incomplete">Needs Wishes</button>
         </div>
@@ -178,10 +185,43 @@
           <div class="modal-actions">
             <button type="button" id="btn-cancel-modal" class="btn-secondary">Cancel</button>
             <button type="submit" id="btn-save-wishes" class="btn-festive btn-gold save-btn">
-              <span>🎁</span> Save Wishes
+              <span>💾</span> Save 3 Wishes
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Supabase Cloud Connection Modal -->
+    <div id="supabase-modal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-card-header">
+          <h3>☁️ Supabase Cloud Database</h3>
+          <button id="btn-close-sb" class="close-modal-btn">✕</button>
+        </div>
+        <div class="modal-card-body">
+          <p style="font-size: 0.88rem; color: #e2dcce; margin-bottom: 12px;">
+            Project URL: <code style="color:#ffd700; font-size:0.8rem;">https://nkctcwwbgqrqmfcqfksa.supabase.co</code>
+          </p>
+          <div id="sb-status-box" style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:14px; font-size:0.85rem;">
+            Checking status...
+          </div>
+          <form id="supabase-key-form">
+            <div class="form-group">
+              <label>Supabase Anon Public API Key</label>
+              <input type="password" id="sb-anon-key-input" class="form-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." required>
+              <small style="color:#9da89e; font-size:0.75rem; display:block; margin-top:4px;">
+                Find this in your Supabase Dashboard: <strong>Project Settings → API → Project API Keys (anon public)</strong>.
+              </small>
+            </div>
+            <div class="modal-actions" style="margin-top:14px;">
+              <button type="button" id="btn-cancel-sb" class="btn-secondary">Cancel</button>
+              <button type="submit" class="btn-festive btn-gold" style="flex:2; justify-content:center;">
+                <span>🔗</span> Connect & Sync
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -200,9 +240,7 @@
 
   </div>
 
-  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <!-- Main App Script -->
   <script src="app.js"></script>
 </body>
 </html>
