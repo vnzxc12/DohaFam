@@ -304,7 +304,10 @@ wishesForm.addEventListener('submit', async (e) => {
   ];
 
   try {
-    const res = await fetch(`/api/members/${activeMember.id}/wishes`, {
+    const memberId = activeMember.id;
+    const memberName = activeMember.name;
+
+    const res = await fetch(`/api/members/${memberId}/wishes`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ wishes: updatedWishes })
@@ -312,7 +315,7 @@ wishesForm.addEventListener('submit', async (e) => {
 
     const result = await res.json();
     if (result.success) {
-      const idx = vaultData.members.findIndex(m => m.id === activeMember.id);
+      const idx = vaultData.members.findIndex(m => m.id === memberId);
       if (idx !== -1) vaultData.members[idx] = result.member;
 
       closeEditModal();
@@ -321,7 +324,7 @@ wishesForm.addEventListener('submit', async (e) => {
       const storageNote = result.savedTo && result.savedTo.supabase
         ? 'Saved to Supabase cloud!'
         : 'Saved successfully!';
-      showToast(`🎁 ${activeMember.name}'s wishes saved! (${storageNote})`);
+      showToast(`🎁 ${memberName}'s wishes saved! (${storageNote})`);
       triggerConfetti();
     } else {
       showToast(`⚠️ Error: ${result.error || 'Failed to save'}`, 'error');

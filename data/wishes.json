@@ -14,9 +14,9 @@
       "wishes": [
         {
           "id": 1,
-          "title": "",
-          "note": "",
-          "link": "",
+          "title": "Perfume Sauvage",
+          "note": "100ml EDT",
+          "link": "https://sephora.com",
           "claimed": false
         },
         {
@@ -34,7 +34,7 @@
           "claimed": false
         }
       ],
-      "updatedAt": "2026-11-11T07:22:39.781Z"
+      "updatedAt": "2026-11-11T07:36:01.664Z"
     },
     {
       "id": "daniel",
