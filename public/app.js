@@ -708,7 +708,7 @@ const bgMusic = document.getElementById('bg-music');
 const btnToggleMusic = document.getElementById('btn-toggle-music');
 const musicIcon = document.getElementById('music-icon');
 const musicText = document.getElementById('music-text');
-let isMusicPlaying = false;
+let isMusicPlaying = true; // Plays on default
 
 function setMusicUI(playing) {
   isMusicPlaying = playing;
@@ -733,9 +733,8 @@ async function playMusic() {
     bgMusic.volume = 0.35; // Gentle festive background volume
     await bgMusic.play();
     setMusicUI(true);
-    localStorage.setItem('doha_music_pref', 'play');
   } catch (err) {
-    console.log('Autoplay waiting for user gesture');
+    // Autoplay waiting for user interaction
   }
 }
 
@@ -743,7 +742,7 @@ function pauseMusic() {
   if (!bgMusic) return;
   bgMusic.pause();
   setMusicUI(false);
-  localStorage.setItem('doha_music_pref', 'pause');
+  sessionStorage.setItem('doha_user_paused', 'true');
 }
 
 function toggleMusic() {
@@ -751,36 +750,53 @@ function toggleMusic() {
     pauseMusic();
     showToast('⏸️ Music paused');
   } else {
+    sessionStorage.removeItem('doha_user_paused');
     playMusic();
     showToast('🎶 Playing Silent Night Instrumental');
   }
 }
 
 if (btnToggleMusic) {
-  btnToggleMusic.addEventListener('click', toggleMusic);
+  btnToggleMusic.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+  });
 }
 
 function initMusic() {
   if (!bgMusic) return;
   bgMusic.volume = 0.35;
-  const pref = localStorage.getItem('doha_music_pref');
 
-  if (pref !== 'pause') {
-    const tryStart = () => {
-      playMusic();
-      document.removeEventListener('click', tryStart);
-      document.removeEventListener('touchstart', tryStart);
-    };
+  // If user explicitly paused during this session, keep paused
+  if (sessionStorage.getItem('doha_user_paused') === 'true') {
+    setMusicUI(false);
+    return;
+  }
 
-    bgMusic.play().then(() => {
+  setMusicUI(true);
+
+  // 1. Attempt immediate playback
+  const playPromise = bgMusic.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
       setMusicUI(true);
     }).catch(() => {
-      // Modern browsers require initial interaction
-      document.addEventListener('click', tryStart, { once: true });
-      document.addEventListener('touchstart', tryStart, { once: true });
+      // 2. Browser policy requires user gesture: start on first touch/click anywhere
+      const unlockAudio = () => {
+        if (sessionStorage.getItem('doha_user_paused') !== 'true') {
+          bgMusic.play().then(() => {
+            setMusicUI(true);
+          }).catch(() => {});
+        }
+        ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(evt => {
+          window.removeEventListener(evt, unlockAudio, true);
+        });
+      };
+
+      ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, unlockAudio, { once: true, capture: true });
+      });
     });
-  } else {
-    setMusicUI(false);
   }
 }
 
